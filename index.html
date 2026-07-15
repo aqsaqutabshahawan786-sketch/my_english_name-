@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Coach App</title>
+    <!-- Tailwind CSS link for design -->
+    <script src="https://jsdelivr.net"></script>
+</head>
+<body class="bg-gray-100 font-sans antialiased">
+
+    <!-- 📅 DAY 1 SCREEN: DASHBOARD -->
+    <div id="dashboard-screen" class="max-w-md mx-auto bg-white min-h-screen p-5 flex flex-col justify-between shadow-lg">
+        <div>
+            <!-- Header -->
+            <div class="mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">English Coach</h1>
+                <p class="text-sm text-gray-500">Ready for today's session?</p>
+            </div>
+
+            <h2 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Select Duration</h2>
+            
+            <!-- 4 Pricing Cards -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div onclick="selectDuration(15, this)" class="duration-card p-4 bg-purple-900 text-white rounded-2xl border-2 border-purple-900 cursor-pointer shadow-md transition-all">
+                    <p class="text-xs text-purple-200 font-medium">Express</p>
+                    <p class="text-xl font-bold my-1">15 mins</p>
+                    <span class="inline-block bg-emerald-400 text-white text-xs font-bold px-2 py-1 rounded-lg">$5.00</span>
+                </div>
+                <div onclick="selectDuration(30, this)" class="duration-card p-4 bg-gray-50 text-gray-800 rounded-2xl border-2 border-gray-200 cursor-pointer transition-all">
+                    <p class="text-xs text-gray-500 font-medium">Power</p>
+                    <p class="text-xl font-bold my-1">30 mins</p>
+                    <span class="inline-block bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-lg">$10.00</span>
+                </div>
+                <div onclick="selectDuration(45, this)" class="duration-card p-4 bg-gray-50 text-gray-800 rounded-2xl border-2 border-gray-200 cursor-pointer transition-all">
+                    <p class="text-xs text-gray-500 font-medium">Deep Dive</p>
+                    <p class="text-xl font-bold my-1">45 mins</p>
+                    <span class="inline-block bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-lg">$15.00</span>
+                </div>
+                <div onclick="selectDuration(60, this)" class="duration-card p-4 bg-gray-50 text-gray-800 rounded-2xl border-2 border-gray-200 cursor-pointer transition-all">
+                    <p class="text-xs text-gray-500 font-medium">Mastery</p>
+                    <p class="text-xl font-bold my-1">1 hour</p>
+                    <span class="inline-block bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-lg">$20.00</span>
+                </div>
+            </div>
+
+            <!-- Focus Scenario Box -->
+            <h2 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Focus Area</h2>
+            <div class="relative">
+                <label class="absolute -top-2 left-3 bg-white px-1 text-xs text-purple-700 font-medium">Custom Dialog Scenario</label>
+                <textarea id="scenario-input" class="w-full p-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-purple-900 resize-none h-24" placeholder="E.g., Talking to a waiter at a restaurant..."></textarea>
+            </div>
+        </div>
+
+        <!-- Start Button -->
+        <button onclick="alert('Day 1 working! Kal is button se chat page khulega.')" class="w-full bg-purple-900 hover:bg-purple-800 text-white font-bold py-4 rounded-full text-center shadow-lg transition-all transform active:scale-95 cursor-pointer mt-4">
+            Start Coaching Session >>
+        </button>
+    </div>
+
+    <script>
+        let selectedMinutes = 15;
+        function selectDuration(mins, element) {
+            selectedMinutes = mins;
+            document.querySelectorAll('.duration-card').forEach(card => {
+                card.className = "duration-card p-4 bg-gray-50 text-gray-800 rounded-2xl border-2 border-gray-200 cursor-pointer transition-all";
+                let badge = card.querySelector('span');
+                if(badge) badge.className = "inline-block bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-lg";
+            });
+            element.className = "duration-card p-4 bg-purple-900 text-white rounded-2xl border-2 border-purple-900 cursor-pointer shadow-md transition-all";
+            let badge = element.querySelector('span');
+            if(badge) badge.className = "inline-block bg-emerald-400 text-white text-xs font-bold px-2 py-1 rounded-lg";
+        }
+    </script>
+</body>
+</html>
