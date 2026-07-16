@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>English Coach App</title>
-    <!-- 100% Sahi aur working design engine link -->
+    <!-- Sahi aur complete Tailwind link layout loading ke liye -->
     <script src="https://jsdelivr.net"></script>
     <style>
         .chat-container { height: calc(100vh - 220px); }
@@ -24,7 +24,7 @@
 
             <h2 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Select Duration</h2>
             
-            <!-- 4 Pricing Cards Layout -->
+            <!-- 4 Pricing Cards -->
             <div class="grid grid-cols-2 gap-4 mb-6">
                 <div onclick="selectDuration(15, this)" class="duration-card p-4 bg-purple-900 text-white rounded-2xl border-2 border-purple-900 cursor-pointer shadow-md transition-all">
                     <p class="text-xs text-purple-200 font-medium">Express</p>
@@ -61,7 +61,7 @@
     </div>
 
     <!-- ========================================================== -->
-    <!-- 📅 DAY 2 & 3 SCREEN: COACHING CHAT SYSTEM -->
+    <!-- 📅 DAY 2, 3 & 4 SCREEN: COACHING CHAT SYSTEM -->
     <!-- ========================================================== -->
     <div id="chat-screen" class="max-w-md mx-auto bg-gray-50 min-h-screen flex flex-col justify-between shadow-lg hidden">
         <!-- App Header with Back Control and Reverse Timer (Day 2) -->
@@ -91,7 +91,7 @@
             </div>
         </div>
 
-        <!-- ⚙️ DAY 2: CONTROL PANEL WITH BLOCK / LOCK ACTION -->
+        <!-- ⚙️ DAY 2 & 4: CONTROL PANEL WITH BLOCK / LOCK ACTION -->
         <div class="p-3 bg-white border-t border-gray-200 flex items-center space-x-3">
             <button id="toggle-btn" onclick="toggleTimer()" class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-4 py-3 rounded-xl transition-all cursor-pointer shadow-md">
                 START
@@ -103,15 +103,15 @@
                 <button id="send-btn" disabled onclick="sendTextMessage()" class="text-gray-400 p-1 ml-1 focus:outline-none">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
                 </button>
-                <button id="mic-btn" disabled onclick="simulateMicInput()" class="text-gray-400 p-1 ml-1 focus:outline-none">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd"></path></svg>
+                <button id="mic-btn" disabled onclick="toggleSpeechRecognition()" class="text-gray-400 p-1 ml-1 focus:outline-none transition-all">
+                    <svg id="mic-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd"></path></svg>
                 </button>
             </div>
         </div>
     </div>
 
     <!-- ========================================================== -->
-    <!-- ⚙️ APP LOGIC & ENGINE CONTROLS -->
+    <!-- ⚙️ ENGINE CONTROLS -->
     <!-- ========================================================== -->
     <script>
         let selectedMinutes = 15;
@@ -119,38 +119,50 @@
         let timerInterval = null;
         let isTimerRunning = false;
 
-        function selectDuration(mins, element) {
-            selectedMinutes = mins;
-            document.querySelectorAll('.duration-card').forEach(card => {
-                card.className = "duration-card p-4 bg-gray-50 text-gray-800 rounded-2xl border-2 border-gray-200 cursor-pointer transition-all";
-                let badge = card.querySelector('span');
-                if(badge) badge.className = "inline-block bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-lg";
-            });
-            element.className = "duration-card p-4 bg-purple-900 text-white rounded-2xl border-2 border-purple-900 cursor-pointer shadow-md transition-all";
-            let badge = element.querySelector('span');
-            if(badge) badge.className = "inline-block bg-emerald-400 text-white text-xs font-bold px-2 py-1 rounded-lg";
+        // Day 4 Engine Control Parameters
+        let recognition = null;
+        let isListeningToMic = false;
+
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = 'en-US';
+
+            recognition.onstart = function() {
+                isListeningToMic = true;
+                document.getElementById('mic-icon').style.color = 'red';
+                document.getElementById('status-bar').innerText = "🎙️ Listening to your voice... Speak now!";
+            };
+
+            recognition.onresult = function(event) {
+                const voiceText = event.results[0][0].transcript;
+                if(voiceText.trim() !== "") {
+                    appendBubble(voiceText, true);
+                    setTimeout(() => {
+                        appendBubble("I heard you clearly! Let's continue practicing our conversation context.", false);
+                    }, 1200);
+                }
+            };
+
+            recognition.onend = function() {
+                isListeningToMic = false;
+                document.getElementById('mic-icon').style.color = 'purple';
+                const scenario = document.getElementById('scenario-input').value || "General Conversation";
+                if(isTimerRunning) {
+                    document.getElementById('status-bar').innerText = `AI sun raha hai... Context: '${scenario}'`;
+                }
+            };
+
+            recognition.onerror = function() {
+                isListeningToMic = false;
+                document.getElementById('mic-icon').style.color = 'purple';
+            };
         }
 
-        function startSession() {
-            remainingSeconds = selectedMinutes * 60;
-            updateTimerDisplay();
-            document.getElementById('chat-title-time').innerText = `Session: ${selectedMinutes} mins`;
-            document.getElementById('dashboard-screen').classList.add('hidden');
-            document.getElementById('chat-screen').classList.remove('hidden');
-        }
-
-        function backToDashboard() {
-            clearInterval(timerInterval);
-            isTimerRunning = false;
-            resetControlsUI();
-            document.getElementById('chat-screen').classList.add('hidden');
-            document.getElementById('dashboard-screen').classList.remove('hidden');
-        }
-
-        function toggleTimer() {
-            const toggleBtn = document.getElementById('toggle-btn');
-            const statusBar = document.getElementById('status-bar');
-            const inputWrapper = document.getElementById('input-wrapper');
-            const chatInput = document.getElementById('chat-input');
-            const sendBtn = document.getElementById('send-btn');
-            const micBtn = document.getElementById('mic-btn');
+        function toggleSpeechRecognition() {
+            if(!recognition) {
+                alert("Mobile browser voice engine issue. Use Chrome.");
+                return;
+            }
+            if (isListeningToMic) {
