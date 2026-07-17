@@ -5,90 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>English Coach App</title>
     <style>
-        /* --- NATIVE MOBILE RESET & CORE STYLES --- */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; color: #1e293b; user-select: none; -webkit-user-select: none; }
-        
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: #f8fafc; color: #1e293b; user-select: none; -webkit-user-select: none; }
         .hidden { display: none !important; }
+        .app-container { min-height: 100vh; display: flex; flex-direction: column; max-width: 450px; margin: 0 auto; background-color: #ffffff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); overflow: hidden; position: relative; }
         
-        /* Mobile App Frame Mockup */
-        .app-container { min-height: 100vh; display: flex; flex-direction: column; max-width: 450px; margin: 0 auto; background-color: #ffffff; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); overflow: hidden; position: relative; }
+        /* 🚨 Test Banner Styling */
+        .test-banner { background-color: #f59e0b; color: #ffffff; padding: 12px; text-align: center; font-weight: bold; font-size: 14px; }
         
-        /* Headers */
-        .app-header { background-color: #4f46e5; color: #ffffff; padding: 16px; text-align: center; font-weight: bold; font-size: 20px; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgb(0 0 0 / 0.1); }
-        .session-header { background-color: #ffffff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-b: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 10; }
-        
-        /* Main Layout Content */
+        .app-header { background-color: #4f46e5; color: #ffffff; padding: 16px; text-align: center; font-weight: bold; font-size: 20px; }
+        .session-header { background-color: #ffffff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-b: 1px solid #e2e8f0; }
         .main-content { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 24px; overflow-y: auto; }
-        
-        /* Form Inputs */
         .input-group { display: flex; flex-direction: column; gap: 8px; }
         .input-label { font-size: 14px; font-weight: 600; color: #475569; }
-        .textarea-field { width: 100%; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 14px; resize: none; box-shadow: 0 1px 2px rgb(0 0 0 / 0.05); outline: none; }
+        .textarea-field { width: 100%; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 14px; resize: none; outline: none; }
         
-        /* Grid Pricing Cards using Real Native Buttons */
         .grid-layout { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        
-        .card-btn { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 20px 10px; 
-            border-radius: 16px; 
-            border: 2px solid #e2e8f0; 
-            background-color: #ffffff; 
-            text-align: center; 
-            cursor: pointer;
-            outline: none;
-        }
+        .card-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 10px; border-radius: 16px; border: 2px solid #e2e8f0; background-color: #ffffff; cursor: pointer; outline: none; }
         .card-btn:active { background-color: #f1f5f9; transform: scale(0.96); }
         
-        /* Card Types Content Setup */
-        .express { border-color: #e0e7ff; background-color: #f5f3ff; } 
-        .power { border-color: #d1fae5; background-color: #ecfdf5; } 
-        .deep { border-color: #fef3c7; background-color: #fffbec; } 
-        .mastery { border-color: #ffe4e6; background-color: #fff5f5; } 
+        .express { border-color: #e0e7ff; background-color: #f5f3ff; } .express .tag { color: #4f46e5; }
+        .power { border-color: #d1fae5; background-color: #ecfdf5; } .power .tag { color: #059669; }
+        .deep { border-color: #fef3c7; background-color: #fffbec; } .deep .tag { color: #d97706; }
+        .mastery { border-color: #ffe4e6; background-color: #fff5f5; } .mastery .tag { color: #e11d48; }
         
-        .tag { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; pointer-events: none; }
-        .express .tag { color: #4f46e5; } .power .tag { color: #059669; } .deep .tag { color: #d97706; } .mastery .tag { color: #e11d48; }
+        .tag { font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; pointer-events: none; }
+        .time { font-size: 24px; font-weight: 900; color: #1e293b; margin-bottom: 6px; pointer-events: none; }
+        .price { font-size: 14px; font-weight: 600; color: #64748b; background-color: #ffffff; padding: 2px 14px; border-radius: 9999px; border: 1px solid #e2e8f0; pointer-events: none; }
         
-        .time { display: block; font-size: 24px; font-weight: 900; color: #1e293b; margin-bottom: 6px; pointer-events: none; }
-        .price { display: inline-block; font-size: 14px; font-weight: 600; color: #64748b; background-color: #ffffff; padding: 2px 14px; border-radius: 9999px; border: 1px solid #e2e8f0; pointer-events: none; }
-        
-        /* --- DAY 2: TIMER UI & LOCKS --- */
         .leave-btn { border: none; background: none; font-size: 14px; font-weight: 500; color: #64748b; cursor: pointer; }
         .timer-badge { font-family: monospace; font-size: 20px; font-weight: 900; color: #4f46e5; background-color: #eef2ff; padding: 4px 16px; border-radius: 9999px; border: 1px solid #e0e7ff; }
         .pause-control-btn { background-color: #4f46e5; color: #ffffff; border: none; font-weight: bold; font-size: 12px; padding: 6px 16px; border-radius: 8px; cursor: pointer; }
         
-        /* Pause Full Overlay Block screen */
-        .overlay-block { position: absolute; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 20; padding: 20px; }
-        .overlay-card { background-color: #ffffff; padding: 24px; border-radius: 24px; text-align: center; max-w: 85%; display: flex; flex-direction: column; gap: 12px; }
-        .resume-btn { background-color: #4f46e5; color: #ffffff; border: none; padding: 10px; border-radius: 12px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; }
-        
-        /* --- DAY 3: WHATSAPP CHAT ENGINE --- */
-        .chat-area { flex: 1; padding: 16px; background-color: #f1f5f9; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+        .chat-area { flex: 1; padding: 16px; background-color: #f1f5f9; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
         .scenario-tag-container { text-align: center; }
-        .scenario-tag { display: inline-block; background-color: #e2e8f0; color: #475569; font-size: 12px; padding: 4px 12px; border-radius: 6px; max-width: 85%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .scenario-tag { display: inline-block; background-color: #e2e8f0; color: #475569; font-size: 12px; padding: 4px 12px; border-radius: 6px; }
         
         .chat-row { display: flex; width: 100%; }
         .user-row { justify-content: flex-end; }
         .ai-row { justify-content: flex-start; }
-        
         .bubble { max-width: 80%; padding: 10px 16px; font-size: 14px; line-height: 1.4; word-break: break-word; border-radius: 16px; }
         .user-bubble { background-color: #4f46e5; color: #ffffff; border-radius: 16px 16px 0 16px; }
         .ai-bubble { background-color: #ffffff; color: #1e293b; border: 1px solid #e2e8f0; border-radius: 16px 16px 16px 0; }
         
-        /* Chat Input Footer Controls */
-        .chat-footer { background-color: #ffffff; padding: 12px; border-top: 1px solid #e2e8f0; display: flex; items-center: center; gap: 8px; position: sticky; bottom: 0; z-index: 10; }
+        .chat-footer { background-color: #ffffff; padding: 12px; border-top: 1px solid #e2e8f0; display: flex; items-center: center; gap: 8px; }
         .mic-control { background-color: #f0fdf4; color: #16a34a; border: 1px solid #d1fae5; font-size: 20px; padding: 10px; border-radius: 12px; cursor: pointer; }
-        .mic-active { background-color: #fff1f2 !important; color: #e11d48 !important; border-color: #ffe4e6 !important; }
-        
         .text-input { flex: 1; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 14px; font-size: 14px; outline: none; }
-        .text-input:disabled { background-color: #f8fafc; opacity: 0.6; }
-        
         .send-control { background-color: #4f46e5; color: #ffffff; border: none; padding: 10px 14px; border-radius: 12px; font-weight: bold; font-size: 14px; cursor: pointer; }
-        .send-control:disabled { opacity: 0.4; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -97,31 +60,35 @@
     <!-- DAY 1: DASHBOARD UI LAYOUT                          -->
     <!-- =================================================== -->
     <div id="dashboard-screen" class="app-container">
+        <!-- 🚨 Yeh banner sirf check karne ke liye hai ke naya code aaya ya nahi -->
+        <div class="test-banner">👉 AGAR YEH BANNER DIKH RAHA HAI TO CODE NAYA HAI 👈</div>
+        
         <header class="app-header">🗣️ English Coach</header>
         <main class="main-content">
             <div class="input-group">
                 <label class="input-label">Apna Coaching Scenario Likhein:</label>
-                <textarea id="scenario-input" rows="3" class="textarea-field" placeholder="Example: Job interview practice for a software engineer role..."></textarea>
+                <textarea id="scenario-input" rows="3" class="textarea-field" placeholder="Example: Job interview practice..."></textarea>
             </div>
             <div class="input-group">
                 <label class="input-label">Session ki Duration Select Karein:</label>
                 <div class="grid-layout">
-                    <button onclick="startSession(15)" class="card-btn express">
+                    <!-- Bilkul simple click system bina kisi jhanjhat ke -->
+                    <button type="button" onclick="startSession(15)" class="card-btn express">
                         <span class="tag">Express</span>
                         <span class="time">15 min</span>
                         <span class="price">$5</span>
                     </button>
-                    <button onclick="startSession(30)" class="card-btn power">
+                    <button type="button" onclick="startSession(30)" class="card-btn power">
                         <span class="tag">Power</span>
                         <span class="time">30 min</span>
                         <span class="price">$10</span>
                     </button>
-                    <button onclick="startSession(45)" class="card-btn deep">
+                    <button type="button" onclick="startSession(45)" class="card-btn deep">
                         <span class="tag">Deep Dive</span>
                         <span class="time">45 min</span>
                         <span class="price">$15</span>
                     </button>
-                    <button onclick="startSession(60)" class="card-btn mastery">
+                    <button type="button" onclick="startSession(60)" class="card-btn mastery">
                         <span class="tag">Mastery</span>
                         <span class="time">1 hour</span>
                         <span class="price">$20</span>
@@ -147,7 +114,50 @@
             </div>
         </div>
 
-        <div id="pause-overlay" class="overlay-block hidden">
-            <div class="overlay-card">
-                <p style="font-size: 18px; font-weight: bold;">Session Paused Hai ⏸️</p>
-                <p style="font-size: 12px; color: #64748b;">Chatting aur inputs tab tak locked hain jab tak aap resume nahi karte.</p>
+        <footer class="chat-footer">
+            <button id="mic-btn" onclick="startSpeechRecognition()" class="mic-control">🎙️</button>
+            <input type="text" id="chat-input" class="text-input" placeholder="Type here...">
+            <button id="send-btn" onclick="handleTextSubmit()" class="send-control">➔</button>
+        </footer>
+    </div>
+
+    <script>
+        const GEMINI_API_KEY = "AQ.Ab8RN6L5leGn4s67K4abTrsZ8rRQTINZaXME5qOo7ODF9VFipg";
+        let countdownTimer = null;
+        let totalSecondsRemaining = 0;
+        let conversationHistory = [];
+
+        function startSession(minutes) {
+            // Screen switch karne ka sab se direct tareeqa
+            document.getElementById('dashboard-screen').style.setProperty('display', 'none', 'important');
+            document.getElementById('coaching-screen').classList.remove('hidden');
+            
+            totalSecondsRemaining = minutes * 60;
+            updateTimerDisplay();
+            
+            clearInterval(countdownTimer);
+            countdownTimer = setInterval(processTimerTick, 1000);
+            
+            triggerAiResponseSimulation("Hello! I am your AI English Coach. Let's start.");
+        }
+
+        function exitSession() {
+            location.reload(); // Sab kuch clear karke app restart karne ke liye
+        }
+
+        function processTimerTick() {
+            if (totalSecondsRemaining <= 0) {
+                clearInterval(countdownTimer);
+                exitSession();
+                return;
+            }
+            totalSecondsRemaining--;
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(totalSecondsRemaining / 60).toString().padStart(2, '0');
+            const secs = (totalSecondsRemaining % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = `${mins}:${secs}`;
+        }
+
