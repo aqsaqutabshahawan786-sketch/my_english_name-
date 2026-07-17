@@ -7,13 +7,18 @@
     <style>
         /* --- NATIVE MOBILE RESET & CORE STYLES --- */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; color: #1e293b; user-select: none; -webkit-user-select: none; }
+        
+        /* Text selection block taake Google Search popups active na hon */
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            background-color: #f8fafc; 
+            color: #1e293b; 
+            user-select: none; 
+            -webkit-user-select: none; 
+        }
         
         .hidden { display: none !important; }
         
-        /* Debug Banner */
-        #debug-log { background: #fee2e2; color: #991b1b; padding: 4px; font-size: 10px; text-align: center; font-weight: bold; border-b: 1px solid #fca5a5; }
-
         /* Mobile App Frame Mockup */
         .app-container { min-height: 100vh; display: flex; flex-direction: column; max-width: 450px; margin: 0 auto; background-color: #ffffff; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); overflow: hidden; position: relative; }
         
@@ -29,10 +34,25 @@
         .input-label { font-size: 14px; font-weight: 600; color: #475569; }
         .textarea-field { width: 100%; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 14px; resize: none; box-shadow: 0 1px 2px rgb(0 0 0 / 0.05); outline: none; }
         
-        /* Grid Pricing Cards */
+        /* Grid Pricing Cards using Real Buttons */
         .grid-layout { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .card-btn { display: block; width: 100%; padding: 20px 10px; border-radius: 16px; border: 2px solid #e2e8f0; background-color: #ffffff; text-align: center; cursor: pointer; }
-        .card-btn:active { background-color: #f1f5f9; transform: scale(0.98); }
+        
+        .card-btn { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px 10px; 
+            border-radius: 16px; 
+            border: 2px solid #e2e8f0; 
+            background-color: #ffffff; 
+            text-align: center; 
+            cursor: pointer;
+            outline: none;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .card-btn:active { background-color: #f1f5f9; transform: scale(0.96); }
         
         /* Card Types Content Setup */
         .express { border-color: #e0e7ff; background-color: #f5f3ff; } 
@@ -40,11 +60,11 @@
         .deep { border-color: #fef3c7; background-color: #fffbec; } 
         .mastery { border-color: #ffe4e6; background-color: #fff5f5; } 
         
-        .tag { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .tag { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; pointer-events: none; }
         .express .tag { color: #4f46e5; } .power .tag { color: #059669; } .deep .tag { color: #d97706; } .mastery .tag { color: #e11d48; }
         
-        .time { display: block; font-size: 24px; font-weight: 900; color: #1e293b; margin-bottom: 6px; }
-        .price { display: inline-block; font-size: 14px; font-weight: 600; color: #64748b; background-color: #ffffff; padding: 2px 14px; border-radius: 9999px; border: 1px solid #e2e8f0; }
+        .time { display: block; font-size: 24px; font-weight: 900; color: #1e293b; margin-bottom: 6px; pointer-events: none; }
+        .price { display: inline-block; font-size: 14px; font-weight: 600; color: #64748b; background-color: #ffffff; padding: 2px 14px; border-radius: 9999px; border: 1px solid #e2e8f0; pointer-events: none; }
         
         /* --- DAY 2: TIMER UI & LOCKS --- */
         .leave-btn { border: none; background: none; font-size: 14px; font-weight: 500; color: #64748b; cursor: pointer; }
@@ -83,9 +103,6 @@
 </head>
 <body>
 
-    <!-- Debug Log Banner to track mobile triggers -->
-    <div id="debug-log">System Status: Engine Ready 🟢</div>
-
     <!-- =================================================== -->
     <!-- DAY 1: DASHBOARD UI LAYOUT                          -->
     <!-- =================================================== -->
@@ -99,27 +116,27 @@
             <div class="input-group">
                 <label class="input-label">Session ki Duration Select Karein:</label>
                 <div class="grid-layout">
-                    <!-- Standard clear onclick handler blocks -->
-                    <div onclick="startSession(15)" class="card-btn express">
+                    <!-- Real Buttons used to enforce true click mechanics -->
+                    <button onclick="startSession(15)" class="card-btn express">
                         <span class="tag">Express</span>
                         <span class="time">15 min</span>
                         <span class="price">$5</span>
-                    </div>
-                    <div onclick="startSession(30)" class="card-btn power">
+                    </button>
+                    <button onclick="startSession(30)" class="card-btn power">
                         <span class="tag">Power</span>
                         <span class="time">30 min</span>
                         <span class="price">$10</span>
-                    </div>
-                    <div onclick="startSession(45)" class="card-btn deep">
+                    </button>
+                    <button onclick="startSession(45)" class="card-btn deep">
                         <span class="tag">Deep Dive</span>
                         <span class="time">45 min</span>
                         <span class="price">$15</span>
                     </button>
-                    <div onclick="startSession(60)" class="card-btn mastery">
+                    <button onclick="startSession(60)" class="card-btn mastery">
                         <span class="tag">Mastery</span>
                         <span class="time">1 hour</span>
                         <span class="price">$20</span>
-                    </div>
+                    </button>
                 </div>
             </div>
         </main>
@@ -142,6 +159,3 @@
         </div>
 
         <div id="pause-overlay" class="overlay-block hidden">
-            <div class="overlay-card">
-                <p style="font-size: 18px; font-weight: bold;">Session Paused Hai ⏸️</p>
-                <p style="font-size: 12px; color: #64748b;">Chatting aur inputs tab tak locked hain jab tak aap resume nahi karte.</p>
