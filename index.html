@@ -11,6 +11,9 @@
         
         .hidden { display: none !important; }
         
+        /* Debug Banner */
+        #debug-log { background: #fee2e2; color: #991b1b; padding: 4px; font-size: 10px; text-align: center; font-weight: bold; border-b: 1px solid #fca5a5; }
+
         /* Mobile App Frame Mockup */
         .app-container { min-height: 100vh; display: flex; flex-direction: column; max-width: 450px; margin: 0 auto; background-color: #ffffff; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); overflow: hidden; position: relative; }
         
@@ -25,35 +28,32 @@
         .input-group { display: flex; flex-direction: column; gap: 8px; }
         .input-label { font-size: 14px; font-weight: 600; color: #475569; }
         .textarea-field { width: 100%; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 14px; resize: none; box-shadow: 0 1px 2px rgb(0 0 0 / 0.05); outline: none; }
-        .textarea-field:focus { border-color: #4f46e5; box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2); }
         
         /* Grid Pricing Cards */
         .grid-layout { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .card-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; border-radius: 16px; border: 1px solid #e2e8f0; background-color: #ffffff; cursor: pointer; transition: transform 0.1s, border-color 0.2s; }
-        .card-btn:active { transform: scale(0.95); background-color: #f1f5f9; }
+        .card-btn { display: block; width: 100%; padding: 20px 10px; border-radius: 16px; border: 2px solid #e2e8f0; background-color: #ffffff; text-align: center; cursor: pointer; }
+        .card-btn:active { background-color: #f1f5f9; transform: scale(0.98); }
         
         /* Card Types Content Setup */
-        .express { border-color: #e0e7ff; background-color: #f5f3ff; } .express .tag { color: #4f46e5; }
-        .power { border-color: #d1fae5; background-color: #ecfdf5; } .power .tag { color: #059669; }
-        .deep { border-color: #fef3c7; background-color: #fffbec; } .deep .tag { color: #d97706; }
-        .mastery { border-color: #ffe4e6; background-color: #fff5f5; } .mastery .tag { color: #e11d48; }
+        .express { border-color: #e0e7ff; background-color: #f5f3ff; } 
+        .power { border-color: #d1fae5; background-color: #ecfdf5; } 
+        .deep { border-color: #fef3c7; background-color: #fffbec; } 
+        .mastery { border-color: #ffe4e6; background-color: #fff5f5; } 
         
-        /* Strict Pointer Events Override */
-        .card-btn * { pointer-events: none !important; }
+        .tag { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .express .tag { color: #4f46e5; } .power .tag { color: #059669; } .deep .tag { color: #d97706; } .mastery .tag { color: #e11d48; }
         
-        .tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .time { font-size: 24px; font-weight: 900; color: #1e293b; margin: 4px 0; }
-        .price { font-size: 14px; font-weight: 600; color: #64748b; background-color: #ffffff; padding: 2px 12px; border-radius: 9999px; box-shadow: 0 1px 2px rgb(0 0 0 / 0.05); }
+        .time { display: block; font-size: 24px; font-weight: 900; color: #1e293b; margin-bottom: 6px; }
+        .price { display: inline-block; font-size: 14px; font-weight: 600; color: #64748b; background-color: #ffffff; padding: 2px 14px; border-radius: 9999px; border: 1px solid #e2e8f0; }
         
         /* --- DAY 2: TIMER UI & LOCKS --- */
         .leave-btn { border: none; background: none; font-size: 14px; font-weight: 500; color: #64748b; cursor: pointer; }
-        .leave-btn:active { color: #ef4444; }
         .timer-badge { font-family: monospace; font-size: 20px; font-weight: 900; color: #4f46e5; background-color: #eef2ff; padding: 4px 16px; border-radius: 9999px; border: 1px solid #e0e7ff; }
-        .pause-control-btn { background-color: #4f46e5; color: #ffffff; border: none; font-weight: bold; font-size: 12px; padding: 6px 16px; border-radius: 8px; cursor: pointer; box-shadow: 0 1px 2px rgb(0 0 0 / 0.05); }
+        .pause-control-btn { background-color: #4f46e5; color: #ffffff; border: none; font-weight: bold; font-size: 12px; padding: 6px 16px; border-radius: 8px; cursor: pointer; }
         
         /* Pause Full Overlay Block screen */
         .overlay-block { position: absolute; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 20; padding: 20px; }
-        .overlay-card { background-color: #ffffff; padding: 24px; border-radius: 24px; text-align: center; max-w: 85%; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); display: flex; flex-direction: column; gap: 12px; }
+        .overlay-card { background-color: #ffffff; padding: 24px; border-radius: 24px; text-align: center; max-w: 85%; display: flex; flex-direction: column; gap: 12px; }
         .resume-btn { background-color: #4f46e5; color: #ffffff; border: none; padding: 10px; border-radius: 12px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; }
         
         /* --- DAY 3: WHATSAPP CHAT ENGINE --- */
@@ -65,27 +65,26 @@
         .user-row { justify-content: flex-end; }
         .ai-row { justify-content: flex-start; }
         
-        .bubble { max-width: 80%; padding: 10px 16px; font-size: 14px; line-height: 1.4; word-break: break-word; box-shadow: 0 1px 2px rgb(0 0 0 / 0.05); }
+        .bubble { max-width: 80%; padding: 10px 16px; font-size: 14px; line-height: 1.4; word-break: break-word; border-radius: 16px; }
         .user-bubble { background-color: #4f46e5; color: #ffffff; border-radius: 16px 16px 0 16px; }
         .ai-bubble { background-color: #ffffff; color: #1e293b; border: 1px solid #e2e8f0; border-radius: 16px 16px 16px 0; }
         
         /* Chat Input Footer Controls */
-        .chat-footer { background-color: #ffffff; padding: 12px; border-top: 1px solid #e2e8f0; display: flex; items-center: center; gap: 8px; position: sticky; bottom: 0; z-index: 10; }
-        .mic-control { background-color: #f0fdf4; color: #16a34a; border: 1px solid #d1fae5; font-size: 20px; padding: 10px; border-radius: 12px; cursor: pointer; transition: transform 0.1s; display: flex; align-items: center; justify-content: center; }
-        .mic-control:active { transform: scale(0.9); }
-        .mic-active { background-color: #fff1f2 !important; color: #e11d48 !important; border-color: #ffe4e6 !important; animation: pulseGlow 1.5s infinite; }
+        .chat-footer { background-color: #ffffff; padding: 12px; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; position: sticky; bottom: 0; z-index: 10; }
+        .mic-control { background-color: #f0fdf4; color: #16a34a; border: 1px solid #d1fae5; font-size: 20px; padding: 10px; border-radius: 12px; cursor: pointer; }
+        .mic-active { background-color: #fff1f2 !important; color: #e11d48 !important; border-color: #ffe4e6 !important; }
         
         .text-input { flex: 1; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 14px; font-size: 14px; outline: none; }
-        .text-input:focus { border-color: #4f46e5; }
         .text-input:disabled { background-color: #f8fafc; opacity: 0.6; }
         
-        .send-control { background-color: #4f46e5; color: #ffffff; border: none; padding: 10px 14px; border-radius: 12px; font-weight: bold; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .send-control { background-color: #4f46e5; color: #ffffff; border: none; padding: 10px 14px; border-radius: 12px; font-weight: bold; font-size: 14px; cursor: pointer; }
         .send-control:disabled { opacity: 0.4; pointer-events: none; }
-        
-        @keyframes pulseGlow { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
+
+    <!-- Debug Log Banner to track mobile triggers -->
+    <div id="debug-log">System Status: Engine Ready 🟢</div>
 
     <!-- =================================================== -->
     <!-- DAY 1: DASHBOARD UI LAYOUT                          -->
@@ -100,27 +99,27 @@
             <div class="input-group">
                 <label class="input-label">Session ki Duration Select Karein:</label>
                 <div class="grid-layout">
-                    <!-- Data attributes are used to hold the time value -->
-                    <button data-time="15" class="card-btn express">
+                    <!-- Standard clear onclick handler blocks -->
+                    <div onclick="startSession(15)" class="card-btn express">
                         <span class="tag">Express</span>
                         <span class="time">15 min</span>
                         <span class="price">$5</span>
-                    </button>
-                    <button data-time="30" class="card-btn power">
+                    </div>
+                    <div onclick="startSession(30)" class="card-btn power">
                         <span class="tag">Power</span>
                         <span class="time">30 min</span>
                         <span class="price">$10</span>
-                    </button>
-                    <button data-time="45" class="card-btn deep">
+                    </div>
+                    <div onclick="startSession(45)" class="card-btn deep">
                         <span class="tag">Deep Dive</span>
                         <span class="time">45 min</span>
                         <span class="price">$15</span>
                     </button>
-                    <button data-time="60" class="card-btn mastery">
+                    <div onclick="startSession(60)" class="card-btn mastery">
                         <span class="tag">Mastery</span>
                         <span class="time">1 hour</span>
                         <span class="price">$20</span>
-                    </button>
+                    </div>
                 </div>
             </div>
         </main>
@@ -138,3 +137,11 @@
 
         <div id="chat-window" class="chat-area">
             <div class="scenario-tag-container">
+                <span id="system-scenario-tag" class="scenario-tag"></span>
+            </div>
+        </div>
+
+        <div id="pause-overlay" class="overlay-block hidden">
+            <div class="overlay-card">
+                <p style="font-size: 18px; font-weight: bold;">Session Paused Hai ⏸️</p>
+                <p style="font-size: 12px; color: #64748b;">Chatting aur inputs tab tak locked hain jab tak aap resume nahi karte.</p>
