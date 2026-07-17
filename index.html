@@ -30,7 +30,7 @@
         /* Grid Pricing Cards */
         .grid-layout { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .card-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; border-radius: 16px; border: 1px solid #e2e8f0; background-color: #ffffff; cursor: pointer; transition: transform 0.1s, border-color 0.2s; }
-        .card-btn:active { transform: scale(0.95); }
+        .card-btn:active { transform: scale(0.95); background-color: #f1f5f9; }
         
         /* Card Types Content Setup */
         .express { border-color: #e0e7ff; background-color: #f5f3ff; } .express .tag { color: #4f46e5; }
@@ -38,8 +38,8 @@
         .deep { border-color: #fef3c7; background-color: #fffbec; } .deep .tag { color: #d97706; }
         .mastery { border-color: #ffe4e6; background-color: #fff5f5; } .mastery .tag { color: #e11d48; }
         
-        /* Pointer events none ensures clicks bypass inner text and hit the button handler directly */
-        .card-btn * { pointer-events: none; }
+        /* Strict Pointer Events Override */
+        .card-btn * { pointer-events: none !important; }
         
         .tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .time { font-size: 24px; font-weight: 900; color: #1e293b; margin: 4px 0; }
@@ -70,7 +70,7 @@
         .ai-bubble { background-color: #ffffff; color: #1e293b; border: 1px solid #e2e8f0; border-radius: 16px 16px 16px 0; }
         
         /* Chat Input Footer Controls */
-        .chat-footer { background-color: #ffffff; padding: 12px; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; position: sticky; bottom: 0; z-index: 10; }
+        .chat-footer { background-color: #ffffff; padding: 12px; border-top: 1px solid #e2e8f0; display: flex; items-center: center; gap: 8px; position: sticky; bottom: 0; z-index: 10; }
         .mic-control { background-color: #f0fdf4; color: #16a34a; border: 1px solid #d1fae5; font-size: 20px; padding: 10px; border-radius: 12px; cursor: pointer; transition: transform 0.1s; display: flex; align-items: center; justify-content: center; }
         .mic-control:active { transform: scale(0.9); }
         .mic-active { background-color: #fff1f2 !important; color: #e11d48 !important; border-color: #ffe4e6 !important; animation: pulseGlow 1.5s infinite; }
@@ -100,22 +100,23 @@
             <div class="input-group">
                 <label class="input-label">Session ki Duration Select Karein:</label>
                 <div class="grid-layout">
-                    <button onclick="startSession(15)" class="card-btn express">
+                    <!-- Data attributes are used to hold the time value -->
+                    <button data-time="15" class="card-btn express">
                         <span class="tag">Express</span>
                         <span class="time">15 min</span>
                         <span class="price">$5</span>
                     </button>
-                    <button onclick="startSession(30)" class="card-btn power">
+                    <button data-time="30" class="card-btn power">
                         <span class="tag">Power</span>
                         <span class="time">30 min</span>
                         <span class="price">$10</span>
                     </button>
-                    <button onclick="startSession(45)" class="card-btn deep">
+                    <button data-time="45" class="card-btn deep">
                         <span class="tag">Deep Dive</span>
                         <span class="time">45 min</span>
                         <span class="price">$15</span>
                     </button>
-                    <button onclick="startSession(60)" class="card-btn mastery">
+                    <button data-time="60" class="card-btn mastery">
                         <span class="tag">Mastery</span>
                         <span class="time">1 hour</span>
                         <span class="price">$20</span>
