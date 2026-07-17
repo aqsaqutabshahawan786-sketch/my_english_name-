@@ -4,59 +4,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>English Coach App</title>
-    <!-- Stable Tailwind CSS v2/v3 CDN for bulletproof mobile loading -->
-    <script src="https://tailwindcss.com"></script>
     <style>
-        /* Fallback CSS: Agar tailwind loading mein thoda nakhra kare tab bhi layout tabah na ho */
+        /* --- NATIVE MOBILE RESET & CORE STYLES --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; color: #1e293b; user-select: none; -webkit-user-select: none; }
+        
         .hidden { display: none !important; }
-        .chat-scroll { -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+        
+        /* Mobile App Frame Mockup */
+        .app-container { min-height: 100vh; display: flex; flex-direction: column; max-width: 450px; margin: 0 auto; background-color: #ffffff; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); overflow: hidden; position: relative; }
+        
+        /* Headers */
+        .app-header { background-color: #4f46e5; color: #ffffff; padding: 16px; text-align: center; font-weight: bold; font-size: 20px; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgb(0 0 0 / 0.1); }
+        .session-header { background-color: #ffffff; padding: 12px 16px; display: flex; items-center: center; justify-content: space-between; border-b: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 10; }
+        
+        /* Main Layout Content */
+        .main-content { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 24px; overflow-y: auto; }
+        
+        /* Form Inputs */
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        .input-label { font-size: 14px; font-weight: 600; color: #475569; }
+        .textarea-field { width: 100%; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 14px; resize: none; box-shadow: 0 1px 2px rgb(0 0 0 / 0.05); outline: none; }
+        .textarea-field:focus { border-color: #4f46e5; box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2); }
+        
+        /* Grid Pricing Cards */
+        .grid-layout { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .card-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; border-radius: 16px; border: 1px solid #e2e8f0; background-color: #ffffff; cursor: pointer; transition: transform 0.1s, border-color 0.2s; }
+        .card-btn:active { transform: scale(0.95); }
+        
+        /* Card Types Content Setup */
+        .express { border-color: #e0e7ff; background-color: #f5f3ff; } .express .tag { color: #4f46e5; }
+        .power { border-color: #d1fae5; background-color: #ecfdf5; } .power .tag { color: #059669; }
+        .deep { border-color: #fef3c7; background-color: #fffbec; } .deep .tag { color: #d97706; }
+        .mastery { border-color: #ffe4e6; background-color: #fff5f5; } .mastery .tag { color: #e11d48; }
+        
+        .tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .time { font-size: 24px; font-weight: 900; color: #1e293b; margin: 4px 0; }
+        .price { font-size: 14px; font-weight: 600; color: #64748b; background-color: #ffffff; padding: 2px 12px; border-radius: 9999px; box-shadow: 0 1px 2px rgb(0 0 0 / 0.05); }
+        
+        /* --- DAY 2: TIMER UI & LOCKS --- */
+        .leave-btn { border: none; background: none; font-size: 14px; font-weight: 500; color: #64748b; cursor: pointer; }
+        .leave-btn:active { color: #ef4444; }
+        .timer-badge { font-family: monospace; font-size: 20px; font-weight: 900; color: #4f46e5; background-color: #eef2ff; padding: 4px 16px; border-radius: 9999px; border: 1px solid #e0e7ff; }
+        .pause-control-btn { background-color: #4f46e5; color: #ffffff; border: none; font-weight: bold; font-size: 12px; padding: 6px 16px; border-radius: 8px; cursor: pointer; box-shadow: 0 1px 2px rgb(0 0 0 / 0.05); }
+        
+        /* Pause Full Overlay Block screen */
+        .overlay-block { position: absolute; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; items-center: center; justify-content: center; z-index: 20; padding: 20px; }
+        .overlay-card { background-color: #ffffff; padding: 24px; border-radius: 24px; text-align: center; max-w: 85%; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); display: flex; flex-direction: column; gap: 12px; }
+        .resume-btn { background-color: #4f46e5; color: #ffffff; border: none; padding: 10px; border-radius: 12px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; }
+        
+        /* --- DAY 3: WHATSAPP CHAT ENGINE --- */
+        .chat-area { flex: 1; padding: 16px; background-color: #f1f5f9; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+        .scenario-tag-container { text-align: center; }
+        .scenario-tag { display: inline-block; background-color: #e2e8f0; color: #475569; font-size: 12px; padding: 4px 12px; border-radius: 6px; max-width: 85%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .chat-row { display: flex; w: 100%; }
+        .user-row { justify-content: flex-end; }
+        .ai-row { justify-content: flex-start; }
+        
+        .bubble { max-width: 80%; padding: 10px 16px; font-size: 14px; line-height: 1.4; word-break: break-word; box-shadow: 0 1px 2px rgb(0 0 0 / 0.05); }
+        .user-bubble { background-color: #4f46e5; color: #ffffff; border-radius: 16px 16px 0 16px; }
+        .ai-bubble { background-color: #ffffff; color: #1e293b; border: 1px solid #e2e8f0; border-radius: 16px 16px 16px 0; }
+        
+        /* Chat Input Footer Controls */
+        .chat-footer { background-color: #ffffff; padding: 12px; border-top: 1px solid #e2e8f0; display: flex; items-center: center; gap: 8px; position: sticky; bottom: 0; z-index: 10; }
+        .mic-control { background-color: #f0fdf4; color: #16a34a; border: 1px solid #d1fae5; font-size: 20px; padding: 10px; border-radius: 12px; cursor: pointer; transition: transform 0.1s; display: flex; align-items: center; justify-content: center; }
+        .mic-control:active { transform: scale(0.9); }
+        .mic-active { background-color: #fff1f2 !important; color: #e11d48 !important; border-color: #ffe4e6 !important; animation: pulseGlow 1.5s infinite; }
+        
+        .text-input { flex: 1; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 14px; font-size: 14px; outline: none; }
+        .text-input:focus { border-color: #4f46e5; }
+        .text-input:disabled { background-color: #f8fafc; opacity: 0.6; }
+        
+        .send-control { background-color: #4f46e5; color: #ffffff; border: none; padding: 10px 14px; border-radius: 12px; font-weight: bold; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .send-control:disabled { opacity: 0.4; pointer-events: none; }
+        
+        @keyframes pulseGlow { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
 </head>
-<body class="bg-gray-50 font-sans antialiased select-none text-gray-800">
+<body>
 
     <!-- =================================================== -->
     <!-- DAY 1: DASHBOARD UI LAYOUT                          -->
     <!-- =================================================== -->
-    <div id="dashboard-screen" class="min-h-screen flex flex-col max-w-md mx-auto bg-white shadow-lg overflow-hidden">
-        <!-- Top Bar Clean Branding -->
-        <header class="bg-indigo-600 text-white p-4 shadow-md text-center font-bold text-xl tracking-wide">
-            🗣️ English Coach
-        </header>
-
-        <main class="flex-1 p-5 space-y-6 overflow-y-auto">
-            <!-- Custom Scenario Input Block -->
-            <div class="space-y-2">
-                <label class="block text-sm font-semibold text-gray-600">Apna Coaching Scenario Likhein:</label>
-                <textarea id="scenario-input" rows="3" class="w-full border border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none shadow-sm placeholder:text-gray-400" placeholder="Example: Job interview practice for a software engineer role..."></textarea>
+    <div id="dashboard-screen" class="app-container">
+        <header class="app-header">🗣️ English Coach</header>
+        <main class="main-content">
+            <div class="input-group">
+                <label class="input-label">Apna Coaching Scenario Likhein:</label>
+                <textarea id="scenario-input" rows="3" class="textarea-field" placeholder="Example: Job interview practice for a software engineer role..."></textarea>
             </div>
-
-            <!-- Time Pricing Grid Layout -->
-            <div class="space-y-3">
-                <label class="block text-sm font-semibold text-gray-600">Session ki Duration Select Karein:</label>
-                <div class="grid grid-cols-2 gap-3">
-                    <!-- 15 Mins -->
-                    <button onclick="startSession(15, 5)" class="flex flex-col items-center justify-center p-4 border border-indigo-100 bg-indigo-50/50 rounded-2xl active:scale-95 transition-all text-center group hover:border-indigo-500">
-                        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Express</span>
-                        <span class="text-2xl font-black text-gray-800 my-1">15 min</span>
-                        <span class="text-sm font-semibold text-gray-500 bg-white px-3 py-0.5 rounded-full shadow-sm">$5</span>
+            <div class="input-group">
+                <label class="input-label">Session ki Duration Select Karein:</label>
+                <div class="grid-layout">
+                    <button onclick="startSession(15)" class="card-btn express">
+                        <span class="tag">Express</span>
+                        <span class="time">15 min</span>
+                        <span class="price">$5</span>
                     </button>
-                    <!-- 30 Mins -->
-                    <button onclick="startSession(30, 10)" class="flex flex-col items-center justify-center p-4 border border-emerald-100 bg-emerald-50/50 rounded-2xl active:scale-95 transition-all text-center group hover:border-emerald-500">
-                        <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Power</span>
-                        <span class="text-2xl font-black text-gray-800 my-1">30 min</span>
-                        <span class="text-sm font-semibold text-gray-500 bg-white px-3 py-0.5 rounded-full shadow-sm">$10</span>
+                    <button onclick="startSession(30)" class="card-btn power">
+                        <span class="tag">Power</span>
+                        <span class="time">30 min</span>
+                        <span class="price">$10</span>
                     </button>
-                    <!-- 45 Mins -->
-                    <button onclick="startSession(45, 15)" class="flex flex-col items-center justify-center p-4 border border-amber-100 bg-amber-50/50 rounded-2xl active:scale-95 transition-all text-center group hover:border-amber-500">
-                        <span class="text-xs font-bold text-amber-600 uppercase tracking-wider">Deep Dive</span>
-                        <span class="text-2xl font-black text-gray-800 my-1">45 min</span>
-                        <span class="text-sm font-semibold text-gray-500 bg-white px-3 py-0.5 rounded-full shadow-sm">$15</span>
+                    <button onclick="startSession(45)" class="card-btn deep">
+                        <span class="tag">Deep Dive</span>
+                        <span class="time">45 min</span>
+                        <span class="price">$15</span>
                     </button>
-                    <!-- 1 Hour -->
-                    <button onclick="startSession(60, 20)" class="flex flex-col items-center justify-center p-4 border border-rose-100 bg-rose-50/50 rounded-2xl active:scale-95 transition-all text-center group hover:border-rose-500">
-                        <span class="text-xs font-bold text-rose-600 uppercase tracking-wider">Mastery</span>
-                        <span class="text-2xl font-black text-gray-800 my-1">1 hour</span>
-                        <span class="text-sm font-semibold text-gray-500 bg-white px-3 py-0.5 rounded-full shadow-sm">$20</span>
+                    <button onclick="startSession(60)" class="card-btn mastery">
+                        <span class="tag">Mastery</span>
+                        <span class="time">1 hour</span>
+                        <span class="price">$20</span>
                     </button>
                 </div>
             </div>
@@ -66,88 +125,17 @@
     <!-- =================================================== -->
     <!-- DAY 2 & 3: COACHING SESSION SCREEN & CHAT ENGINE    -->
     <!-- =================================================== -->
-    <div id="coaching-screen" class="hidden min-h-screen flex flex-col max-w-md mx-auto bg-gray-100 overflow-hidden relative">
-        <!-- Day 2 Top Navigation & Reverse Timer Header -->
-        <header class="bg-white px-4 py-3 flex items-center justify-between shadow-sm border-b border-gray-200 sticky top-0 z-10">
-            <button onclick="exitSession()" class="text-sm font-medium text-gray-500 active:text-rose-500">❌ Leave</button>
-            <div id="timer-display" class="font-mono text-xl font-black text-indigo-600 tracking-wider bg-indigo-50 px-4 py-1 rounded-full border border-indigo-100">
-                00:00
-            </div>
-            <button id="pause-btn" onclick="toggleTimer()" class="bg-indigo-600 text-white font-bold text-xs px-4 py-1.5 rounded-lg shadow-sm active:bg-indigo-700">
-                ⏸️ Pause
-            </button>
+    <div id="coaching-screen" class="app-container hidden">
+        <header class="session-header">
+            <button onclick="exitSession()" class="leave-btn">❌ Leave</button>
+            <div id="timer-display" class="timer-badge">00:00</div>
+            <button id="pause-btn" onclick="toggleTimer()" class="pause-control-btn">⏸️ Pause</button>
         </header>
 
-        <!-- Day 3 WhatsApp Style Bubble Chat Engine Area -->
-        <div id="chat-window" class="flex-1 p-4 overflow-y-auto space-y-4 chat-scroll">
-            <!-- Initial System Welcome Note -->
-            <div class="text-center">
-                <span id="system-scenario-tag" class="inline-block bg-gray-200 text-gray-600 text-xs px-3 py-1 rounded-md max-w-[85%] truncate"></span>
+        <div id="chat-window" class="chat-area">
+            <div class="scenario-tag-container">
+                <span id="system-scenario-tag" class="scenario-tag"></span>
             </div>
         </div>
 
-        <!-- Day 2 Pause Block Warning Layer Over Chat Screen -->
-        <div id="pause-overlay" class="hidden absolute inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-20 transition-all">
-            <div class="bg-white p-6 rounded-2xl shadow-xl text-center max-w-[80%] space-y-3">
-                <p class="text-lg font-bold text-gray-800">Session Paused Hai ⏸️</p>
-                <p class="text-xs text-gray-500">Chanting aur inputs tab tak locked hain jab tak aap resume nahi karte.</p>
-                <button onclick="toggleTimer()" class="w-full bg-indigo-600 text-white py-2 rounded-xl text-sm font-bold shadow-md active:bg-indigo-700">▶️ Resume Session</button>
-            </div>
-        </div>
-
-        <!-- Input Control Panel Footer Area (With State Lock Logic) -->
-        <footer class="bg-white p-3 border-t border-gray-200 sticky bottom-0 z-10 flex items-center gap-2">
-            <!-- Web Audio Native Mic Control -->
-            <button id="mic-btn" onclick="startSpeechRecognition()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 p-3 rounded-xl transition-all active:scale-90 disabled:opacity-40 disabled:pointer-events-none" title="Speak">
-                🎙️
-            </button>
-            <!-- Text input engine input -->
-            <input type="text" id="chat-input" class="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-50 disabled:opacity-50" placeholder="Type here in English...">
-            <!-- Send UI Trigger -->
-            <button id="send-btn" onclick="handleTextSubmit()" class="bg-indigo-600 text-white p-2.5 rounded-xl font-bold text-sm active:scale-95 disabled:opacity-40 disabled:pointer-events-none shadow-sm">
-                ➔
-            </button>
-        </footer>
-    </div>
-
-    <!-- =================================================== -->
-    <!-- DAY 2, 3, & 4: APP BACKEND LOGIC CORE MOTOR         -->
-    <!-- =================================================== -->
-    <script>
-        let countdownTimer = null;
-        let totalSecondsRemaining = 0;
-        let isTimerPaused = false;
-
-        // --- DAY 2: NAVIGATION & SCREEN MANAGER ---
-        function startSession(minutes, cost) {
-            const scenarioText = document.getElementById('scenario-input').value.trim();
-            document.getElementById('system-scenario-tag').innerText = scenarioText ? `Scenario: ${scenarioText}` : "Scenario: General Practice";
-            
-            document.getElementById('dashboard-screen').classList.add('hidden');
-            document.getElementById('coaching-screen').classList.remove('hidden');
-            
-            totalSecondsRemaining = minutes * 60;
-            isTimerPaused = false;
-            updateTimerDisplay();
-            
-            clearInterval(countdownTimer);
-            countdownTimer = setInterval(processTimerTick, 1000);
-            
-            triggerAiResponseSimulation("Hello! I am your AI English Coach. Let's practice English based on your scenario. What would you like to talk about first?");
-        }
-
-        function exitSession() {
-            if(confirm("Kya aap waqai is session ko khatam karna chahte hain?")) {
-                clearInterval(countdownTimer);
-                document.getElementById('coaching-screen').classList.add('hidden');
-                document.getElementById('dashboard-screen').classList.remove('hidden');
-                document.getElementById('chat-window').innerHTML = ''; 
-                document.getElementById('scenario-input').value = ''; 
-                setInterfaceLockState(false);
-            }
-        }
-
-        // --- DAY 2: REVERSE COUNTDOWN TIMER & STRICT LOCK ENGINE ---
-        function processTimerTick() {
-            if (isTimerPaused) return;
-
+        <!-- DAY 2: PAUSE STATE OVERLAY SCREEN LAYER -->
