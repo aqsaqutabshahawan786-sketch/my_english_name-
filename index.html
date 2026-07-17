@@ -7,15 +7,7 @@
     <style>
         /* --- NATIVE MOBILE RESET & CORE STYLES --- */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        
-        /* Text selection block taake Google Search popups active na hon */
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            background-color: #f8fafc; 
-            color: #1e293b; 
-            user-select: none; 
-            -webkit-user-select: none; 
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; color: #1e293b; user-select: none; -webkit-user-select: none; }
         
         .hidden { display: none !important; }
         
@@ -49,8 +41,6 @@
             text-align: center; 
             cursor: pointer;
             outline: none;
-            user-select: none;
-            -webkit-user-select: none;
         }
         .card-btn:active { background-color: #f1f5f9; transform: scale(0.96); }
         
@@ -116,7 +106,7 @@
             <div class="input-group">
                 <label class="input-label">Session ki Duration Select Karein:</label>
                 <div class="grid-layout">
-                    <!-- Real Buttons used to enforce true click mechanics -->
+                    <!-- Standard clean HTML onclick logic with no interference -->
                     <button onclick="startSession(15)" class="card-btn express">
                         <span class="tag">Express</span>
                         <span class="time">15 min</span>
@@ -159,3 +149,6 @@
         </div>
 
         <div id="pause-overlay" class="overlay-block hidden">
+            <div class="overlay-card">
+                <p style="font-size: 18px; font-weight: bold;">Session Paused Hai ⏸️</p>
+
