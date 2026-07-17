@@ -26,7 +26,7 @@
         .input-label { font-size: 14px; font-weight: 600; color: #475569; }
         .textarea-field { width: 100%; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 14px; resize: none; box-shadow: 0 1px 2px rgb(0 0 0 / 0.05); outline: none; }
         
-        /* Grid Pricing Cards using Real Buttons */
+        /* Grid Pricing Cards using Real Native Buttons */
         .grid-layout { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         
         .card-btn { 
@@ -80,7 +80,7 @@
         .ai-bubble { background-color: #ffffff; color: #1e293b; border: 1px solid #e2e8f0; border-radius: 16px 16px 16px 0; }
         
         /* Chat Input Footer Controls */
-        .chat-footer { background-color: #ffffff; padding: 12px; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; position: sticky; bottom: 0; z-index: 10; }
+        .chat-footer { background-color: #ffffff; padding: 12px; border-top: 1px solid #e2e8f0; display: flex; items-center: center; gap: 8px; position: sticky; bottom: 0; z-index: 10; }
         .mic-control { background-color: #f0fdf4; color: #16a34a; border: 1px solid #d1fae5; font-size: 20px; padding: 10px; border-radius: 12px; cursor: pointer; }
         .mic-active { background-color: #fff1f2 !important; color: #e11d48 !important; border-color: #ffe4e6 !important; }
         
@@ -106,7 +106,6 @@
             <div class="input-group">
                 <label class="input-label">Session ki Duration Select Karein:</label>
                 <div class="grid-layout">
-                    <!-- Standard clean HTML onclick logic with no interference -->
                     <button onclick="startSession(15)" class="card-btn express">
                         <span class="tag">Express</span>
                         <span class="time">15 min</span>
@@ -151,4 +150,4 @@
         <div id="pause-overlay" class="overlay-block hidden">
             <div class="overlay-card">
                 <p style="font-size: 18px; font-weight: bold;">Session Paused Hai ⏸️</p>
-
+                <p style="font-size: 12px; color: #64748b;">Chatting aur inputs tab tak locked hain jab tak aap resume nahi karte.</p>
