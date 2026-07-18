@@ -1,167 +1,308 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>English Coach App</title>
-    <style>
-        /* --- CORE APP STYLES --- */
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: #f8fafc; color: #1e293b; }
-        .hidden { display: none !important; }
-        .app-container { min-height: 100vh; display: flex; flex-direction: column; max-width: 450px; margin: 0 auto; background-color: #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden; position: relative; }
-        
-        .app-header { background-color: #4f46e5; color: #ffffff; padding: 16px; text-align: center; font-weight: bold; font-size: 20px; }
-        .session-header { background-color: #ffffff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-b: 1px solid #e2e8f0; }
-        .main-content { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 24px; overflow-y: auto; }
-        
-        .input-group { display: flex; flex-direction: column; gap: 8px; }
-        .input-label { font-size: 14px; font-weight: 600; color: #475569; }
-        .textarea-field { width: 100%; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 14px; resize: none; outline: none; }
-        
-        .grid-layout { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .card-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 10px; border-radius: 16px; border: 2px solid #e2e8f0; background-color: #ffffff; cursor: pointer; outline: none; }
-        .card-btn:active { background-color: #f1f5f9; transform: scale(0.96); }
-        
-        .express { border-color: #e0e7ff; background-color: #f5f3ff; }
-        .tag { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #4f46e5; margin-bottom: 4px; }
-        .time { font-size: 24px; font-weight: 900; color: #1e293b; margin-bottom: 6px; }
-        .price { font-size: 14px; font-weight: 600; color: #64748b; background-color: #ffffff; padding: 2px 14px; border-radius: 9999px; border: 1px solid #e2e8f0; }
-        
-        /* --- CHAT ENGINE & BUBBLES --- */
-        .chat-area { flex: 1; padding: 16px; background-color: #f1f5f9; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
-        .chat-row { display: flex; width: 100%; }
-        .user-row { justify-content: flex-end; }
-        .ai-row { justify-content: flex-start; }
-        .bubble { max-width: 80%; padding: 10px 16px; font-size: 14px; line-height: 1.4; word-break: break-word; border-radius: 16px; }
-        .user-bubble { background-color: #4f46e5; color: #ffffff; border-radius: 16px 16px 0 16px; }
-        .ai-bubble { background-color: #ffffff; color: #1e293b; border: 1px solid #e2e8f0; border-radius: 16px 16px 16px 0; }
-        
-        .chat-footer { background-color: #ffffff; padding: 12px; border-top: 1px solid #e2e8f0; display: flex; items-center: center; gap: 8px; }
-        .text-input { flex: 1; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 14px; font-size: 14px; outline: none; }
-        .send-control { background-color: #4f46e5; color: #ffffff; border: none; padding: 10px 14px; border-radius: 12px; font-weight: bold; cursor: pointer; }
-        
-        /* 📋 DAY 6: MISTAKE REPORT CARD (SUMMARY LAYER) */
-        .summary-overlay { position: absolute; inset: 0; background-color: rgba(15, 23, 42, 0.7); display: flex; items-center: center; justify-content: center; z-index: 100; padding: 20px; }
-        .summary-card { background-color: #ffffff; padding: 24px; border-radius: 24px; width: 100%; max-width: 380px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 16px; }
-        .summary-header { font-size: 18px; font-weight: bold; color: #1e293b; border-b: 2px solid #f1f5f9; padding-bottom: 8px; text-align: center; }
-        .report-box { background-color: #fff1f2; border: 1px solid #ffe4e6; padding: 12px; border-radius: 12px; max-height: 200px; overflow-y: auto; font-size: 13px; color: #9f1239; line-height: 1.5; }
-        .close-summary-btn { background-color: #4f46e5; color: #ffffff; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer; text-align: center; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Coach AI</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f6fb;
+}
+
+.container{
+max-width:450px;
+margin:auto;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+background:white;
+}
+
+header{
+background:#4f46e5;
+color:white;
+padding:18px;
+text-align:center;
+font-size:22px;
+font-weight:bold;
+}
+
+.main{
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+label{
+font-weight:bold;
+font-size:14px;
+}
+
+input,textarea{
+width:100%;
+padding:12px;
+border:1px solid #ddd;
+border-radius:10px;
+font-size:15px;
+}
+
+textarea{
+height:90px;
+resize:none;
+}
+
+.btn{
+width:100%;
+padding:15px;
+background:#4f46e5;
+color:white;
+border:none;
+border-radius:12px;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.btn:active{
+transform:scale(.97);
+}
+
+.hidden{
+display:none;
+}
+
+#chatScreen{
+display:none;
+flex-direction:column;
+height:100vh;
+}
+
+.topBar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px;
+background:#4f46e5;
+color:white;
+}
+
+#chat{
+flex:1;
+overflow:auto;
+padding:15px;
+background:#eef2ff;
+}
+
+.message{
+padding:10px 15px;
+border-radius:15px;
+margin-bottom:10px;
+max-width:80%;
+}
+
+.user{
+background:#4f46e5;
+color:white;
+margin-left:auto;
+}
+
+.ai{
+background:white;
+border:1px solid #ddd;
+}
+
+.bottom{
+display:flex;
+padding:10px;
+gap:10px;
+background:white;
+}
+
+.bottom input{
+flex:1;
+}
+
+.sendBtn{
+padding:10px 18px;
+background:#4f46e5;
+color:white;
+border:none;
+border-radius:10px;
+}
+</style>
 </head>
+
 <body>
 
-    <!-- SCREEN 1: DASHBOARD -->
-    <div id="dashboard-screen" class="app-container">
-        <header class="app-header">🗣️ English Coach</header>
-        <main class="main-content">
-            <!-- New Safe Input Box so GitHub never scans your key -->
-            <div class="input-group">
-                <label class="input-label">Gemini API Key Paste Karein:</label>
-                <input type="text" id="api-key-input" class="textarea-field" style="padding: 12px;" placeholder="Paste your AQ.Ab8RN... key here">
-            </div>
-            <div class="input-group">
-                <label class="input-label">Apna Coaching Scenario Likhein:</label>
-                <textarea id="scenario-input" rows="3" class="textarea-field" placeholder="Example: Job interview practice..."></textarea>
-            </div>
-            <div class="input-group">
-                <label class="input-label">Session ki Duration Select Karein:</label>
-                <div class="grid-layout">
-                    <!-- Standard HTML buttons to prevent any frame freezing -->
-                    <button type="button" onclick="startSession(15)" class="card-btn express">
-                        <span class="tag">Express</span>
-                        <span class="time">15 min</span>
-                        <span class="price">$5</span>
-                    </button>
-                    <!-- Quick Dev Test Button (10 Seconds) taake aapko wait na karna pare -->
-                    <button type="button" onclick="startSession(0.16)" class="card-btn express" style="border-color: #f59e0b;">
-                        <span class="tag" style="color: #d97706;">⚡ Quick Test</span>
-                        <span class="time">10 sec</span>
-                        <span class="price">FREE</span>
-                    </button>
-                </div>
-            </div>
-        </main>
-    </div>
+<div class="container" id="homeScreen">
 
-    <!-- SCREEN 2: COACHING CHAT -->
-    <div id="coaching-screen" class="app-container hidden">
-        <header class="session-header">
-            <button onclick="exitSession()" class="leave-btn">❌ Leave</button>
-            <div id="timer-display" class="timer-badge">00:00</div>
-            <button onclick="endSessionEarly()" class="pause-control-btn" style="background-color: #ef4444;">🏁 End</button>
-        </header>
+<header>
+English Coach AI
+</header>
 
-        <div id="chat-window" class="chat-area"></div>
+<div class="main">
 
-        <footer class="chat-footer">
-            <input type="text" id="chat-input" class="text-input" placeholder="Type here in English...">
-            <button id="send-btn" onclick="handleTextSubmit()" class="send-control">➔</button>
-        </footer>
-    </div>
+<label>Gemini API Key</label>
 
-    <!-- 📋 DAY 6: AUTOMATED MISTAKE REPORT CARD OVERLAY -->
-    <div id="summary-screen" class="summary-overlay hidden">
-        <div class="summary-card">
-            <div class="summary-header">📊 Mistake Report Card</div>
-            <div id="report-content" class="report-box">
-                Analyzing your session grammar... Please wait.
-            </div>
-            <button onclick="closeReportCard()" class="close-summary-btn">Go to Dashboard</button>
-        </div>
-    </div>
+<input
+id="apiKey"
+placeholder="Paste API Key">
 
-    <script>
-        let GEMINI_API_KEY = "";
-        let countdownTimer = null;
-        let totalSecondsRemaining = 0;
-        let conversationHistory = [];
-        let userMessagesOnly = []; // Stores user text to generate Day 6 report card
+<label>Scenario</label>
 
-        function startSession(minutes) {
-            GEMINI_API_KEY = document.getElementById('api-key-input').value.trim();
-            if(!GEMINI_API_KEY) {
-                alert("Please paste your Gemini API Key first!");
-                return;
-            }
+<textarea
+id="scenario"
+placeholder="Example: Job Interview"></textarea>
 
-            // Direct CSS layout swap mechanics
-            document.getElementById('dashboard-screen').style.display = 'none';
-            document.getElementById('coaching-screen').classList.remove('hidden');
-            
-            totalSecondsRemaining = Math.floor(minutes * 60);
-            updateTimerDisplay();
-            
-            clearInterval(countdownTimer);
-            countdownTimer = setInterval(processTimerTick, 1000);
-            
-            conversationHistory = [];
-            userMessagesOnly = [];
-            insertChatBubble("Hello! I am your English Coach. Let's start practicing.", "ai");
-        }
+<button
+class="btn"
+onclick="startSession()">
 
-        function processTimerTick() {
-            if (totalSecondsRemaining <= 0) {
-                clearInterval(countdownTimer);
-                generateEndSummary(); // Day 6 Auto-trigger
-                return;
-            }
-            totalSecondsRemaining--;
-            updateTimerDisplay();
-        }
+Start Practice
 
-        function updateTimerDisplay() {
-            const mins = Math.floor(totalSecondsRemaining / 60).toString().padStart(2, '0');
-            const secs = (totalSecondsRemaining % 60).toString().padStart(2, '0');
-            document.getElementById('timer-display').innerText = `${mins}:${secs}`;
-        }
+</button>
 
-        function insertChatBubble(message, senderType) {
-            const chatWindow = document.getElementById('chat-window');
-            const row = document.createElement('div');
-            row.className = `chat-row ${senderType === 'user' ? 'user-row' : 'ai-row'}`;
-            const bubble = document.createElement('div');
-            bubble.className = `bubble ${senderType === 'user' ? 'user-bubble' : 'ai-bubble'}`;
-            bubble.innerText = message;
-            row.appendChild(bubble);
-            chatWindow.appendChild(row);
+</div>
+
+</div>
+
+<div id="chatScreen">
+
+<div class="topBar">
+
+<div id="timer">
+15:00
+</div>
+
+<button onclick="goHome()">
+
+Exit
+
+</button>
+
+</div>
+
+<div id="chat">
+
+</div>
+
+<div class="bottom">
+
+<input
+id="message"
+placeholder="Type here...">
+
+<button
+class="sendBtn"
+onclick="sendMessage()">
+
+Send
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+    let timeLeft = 15 * 60;
+let timer;
+
+function startSession() {
+
+const api = document.getElementById("apiKey").value.trim();
+
+if(api===""){
+alert("Please paste your Gemini API Key.");
+return;
+}
+
+document.getElementById("homeScreen").style.display="none";
+document.getElementById("chatScreen").style.display="flex";
+
+addMessage("AI","👋 Hello! I'm your English Coach. Let's practice English together.");
+
+startTimer();
+
+}
+
+function startTimer(){
+
+clearInterval(timer);
+
+timer=setInterval(function(){
+
+timeLeft--;
+
+let m=Math.floor(timeLeft/60);
+let s=timeLeft%60;
+
+document.getElementById("timer").innerHTML=
+String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+
+if(timeLeft<=0){
+clearInterval(timer);
+alert("Session Finished");
+goHome();
+}
+
+},1000);
+
+}
+
+function goHome(){
+
+clearInterval(timer);
+
+timeLeft=15*60;
+
+document.getElementById("timer").innerHTML="15:00";
+
+document.getElementById("chat").innerHTML="";
+
+document.getElementById("homeScreen").style.display="flex";
+
+document.getElementById("chatScreen").style.display="none";
+
+}
+
+function addMessage(sender,text){
+
+const chat=document.getElementById("chat");
+
+const div=document.createElement("div");
+
+div.className="message "+(sender==="You"?"user":"ai");
+
+div.innerText=text;
+
+chat.appendChild(div);
+
+chat.scrollTop=chat.scrollHeight;
+
+}
+
+function sendMessage(){
+
+const input=document.getElementById("message");
+
+const msg=input.value.trim();
+
+if(msg==="") return;
+
+addMessage("You",msg);
+
+input.value="";
+
+addMessage("AI","⏳ Thinking... (Gemini API will be added in Part 2)");
+
+}
