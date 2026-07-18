@@ -84,6 +84,7 @@ display:none;
 display:none;
 flex-direction:column;
 height:100vh;
+width:100%;
 }
 
 .topBar{
@@ -224,9 +225,7 @@ const api = document.getElementById("apiKey").value.trim();
 if(api===""){
 alert("Please paste your Gemini API Key.");
 return;
-}
-
-document.getElementById("homeScreen").style.display="none";
+document.getElementById("homeScreen").classList.add("hidden");
 document.getElementById("chatScreen").style.display="flex";
 
 addMessage("AI","👋 Hello! I'm your English Coach. Let's practice English together.");
