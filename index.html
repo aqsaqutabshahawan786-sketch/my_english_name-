@@ -5,20 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>English Coach App</title>
     <style>
+        /* --- CORE STYLES --- */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: #f8fafc; color: #1e293b; user-select: none; -webkit-user-select: none; }
+        
         .hidden { display: none !important; }
-        .app-container { min-height: 100vh; display: flex; flex-direction: column; max-width: 450px; margin: 0 auto; background-color: #ffffff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); overflow: hidden; position: relative; }
+        
+        /* Layout Structure - Fixed screen layering issue */
+        .app-container { min-height: 100vh; display: flex; flex-direction: column; max-width: 450px; margin: 0 auto; background-color: #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden; position: relative; z-index: 1; }
         
         .app-header { background-color: #4f46e5; color: #ffffff; padding: 16px; text-align: center; font-weight: bold; font-size: 20px; }
         .session-header { background-color: #ffffff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-b: 1px solid #e2e8f0; }
         .main-content { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 24px; overflow-y: auto; }
+        
         .input-group { display: flex; flex-direction: column; gap: 8px; }
         .input-label { font-size: 14px; font-weight: 600; color: #475569; }
         .textarea-field { width: 100%; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 14px; resize: none; outline: none; }
         
-        .grid-layout { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .card-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 10px; border-radius: 16px; border: 2px solid #e2e8f0; background-color: #ffffff; cursor: pointer; outline: none; }
+        /* Grid Moveable Buttons Fixed stack index */
+        .grid-layout { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; position: relative; z-index: 10 !important; }
+        .card-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 10px; border-radius: 16px; border: 2px solid #e2e8f0; background-color: #ffffff; cursor: pointer; outline: none; position: relative; z-index: 15 !important; }
         .card-btn:active { background-color: #f1f5f9; transform: scale(0.96); }
         
         .express { border-color: #e0e7ff; background-color: #f5f3ff; } .express .tag { color: #4f46e5; }
@@ -30,6 +36,7 @@
         .time { font-size: 24px; font-weight: 900; color: #1e293b; margin-bottom: 6px; pointer-events: none; }
         .price { font-size: 14px; font-weight: 600; color: #64748b; background-color: #ffffff; padding: 2px 14px; border-radius: 9999px; border: 1px solid #e2e8f0; pointer-events: none; }
         
+        /* --- CHAT MECHANICS --- */
         .leave-btn { border: none; background: none; font-size: 14px; font-weight: 500; color: #64748b; cursor: pointer; }
         .timer-badge { font-family: monospace; font-size: 20px; font-weight: 900; color: #4f46e5; background-color: #eef2ff; padding: 4px 16px; border-radius: 9999px; border: 1px solid #e0e7ff; }
         .pause-control-btn { background-color: #4f46e5; color: #ffffff; border: none; font-weight: bold; font-size: 12px; padding: 6px 16px; border-radius: 8px; cursor: pointer; }
@@ -53,9 +60,7 @@
 </head>
 <body>
 
-    <!-- =================================================== -->
-    <!-- DAY 1: DASHBOARD UI LAYOUT                          -->
-    <!-- =================================================== -->
+    <!-- SCREEN 1: DASHBOARD -->
     <div id="dashboard-screen" class="app-container">
         <header class="app-header">🗣️ English Coach</header>
         <main class="main-content">
@@ -91,14 +96,12 @@
         </main>
     </div>
 
-    <!-- =================================================== -->
-    <!-- DAY 2 & 3: COACHING SESSION SCREEN & CHAT ENGINE    -->
-    <!-- =================================================== -->
+    <!-- SCREEN 2: COACHING CHAT -->
     <div id="coaching-screen" class="app-container hidden">
         <header class="session-header">
             <button onclick="exitSession()" class="leave-btn">❌ Leave</button>
             <div id="timer-display" class="timer-badge">00:00</div>
-            <button id="pause-btn" class="pause-control-btn">⏸️ Pause</button>
+            <button id="pause-btn" onclick="toggleTimer()" class="pause-control-btn">⏸️ Pause</button>
         </header>
 
         <div id="chat-window" class="chat-area">
@@ -108,20 +111,25 @@
         </div>
 
         <footer class="chat-footer">
-            <button id="mic-btn" class="mic-control">🎙️</button>
+            <button id="mic-btn" onclick="startSpeechRecognition()" class="mic-control">🎙️</button>
             <input type="text" id="chat-input" class="text-input" placeholder="Type here...">
             <button id="send-btn" onclick="handleTextSubmit()" class="send-control">➔</button>
         </footer>
     </div>
 
     <script>
+        const GEMINI_API_KEY = "AQ.Ab8RN6L5leGn4s67K4abTrsZ8rRQTINZaXME5qOo7ODF9VFipg";
         let countdownTimer = null;
         let totalSecondsRemaining = 0;
+        let conversationHistory = [];
 
         function startSession(minutes) {
-            // Direct screen change logic with absolutely no crash points
+            // Force screen layout swap instantly
             document.getElementById('dashboard-screen').classList.add('hidden');
             document.getElementById('coaching-screen').classList.remove('hidden');
+            
+            const scenarioText = document.getElementById('scenario-input').value.trim() || "General English Practice";
+            document.getElementById('system-scenario-tag').innerText = `Scenario: ${scenarioText}`;
             
             totalSecondsRemaining = minutes * 60;
             updateTimerDisplay();
@@ -129,7 +137,8 @@
             clearInterval(countdownTimer);
             countdownTimer = setInterval(processTimerTick, 1000);
             
-            insertChatBubble("Hello! I am your AI English Coach. The app interface is now fully active!", 'ai');
+            conversationHistory = [];
+            triggerAiResponseSimulation("Hello! I am your AI English Coach. Let's start our conversation. Type your message below.");
         }
 
         function exitSession() {
@@ -155,13 +164,3 @@
         function insertChatBubble(message, senderType) {
             const chatWindow = document.getElementById('chat-window');
             const row = document.createElement('div');
-            row.className = `chat-row ${senderType === 'user' ? 'user-row' : 'ai-row'}`;
-            const bubble = document.createElement('div');
-            bubble.className = `bubble ${senderType === 'user' ? 'user-bubble' : 'ai-bubble'}`;
-            bubble.innerText = message;
-            row.appendChild(bubble);
-            chatWindow.appendChild(row);
-            chatWindow.scrollTop = chatWindow.scrollHeight;
-        }
-
-        function handleTextSubmit() {
