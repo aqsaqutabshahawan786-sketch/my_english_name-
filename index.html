@@ -21,39 +21,23 @@ background:#eef2ff;
 max-width:450px;
 margin:auto;
 min-height:100vh;
-background:#fff;
-display:flex;
-flex-direction:column;
-}
-
-header{
-background:#4f46e5;
-color:#fff;
-padding:18px;
-text-align:center;
-font-size:24px;
-font-weight:bold;
-}
-
-.main{
+background:white;
 padding:20px;
-display:flex;
-flex-direction:column;
-gap:15px;
 }
 
-label{
-font-weight:bold;
-font-size:14px;
+h1{
+text-align:center;
+color:#4f46e5;
+margin-bottom:20px;
 }
 
-input,
-textarea{
+input,textarea{
 width:100%;
 padding:12px;
-border:1px solid #ddd;
+margin-bottom:15px;
+border:1px solid #ccc;
 border-radius:10px;
-font-size:15px;
+font-size:16px;
 }
 
 textarea{
@@ -62,170 +46,42 @@ resize:none;
 }
 
 button{
-padding:15px;
-border:none;
-border-radius:10px;
+width:100%;
+padding:14px;
 background:#4f46e5;
 color:white;
+border:none;
+border-radius:10px;
 font-size:17px;
 font-weight:bold;
 cursor:pointer;
 }
 
-button:hover{
-opacity:.9;
-}
-  
-#homeScreen{
-display:block;
-}
-
 #chatScreen{
 display:none;
-padding:20px;
 }
 
-button:hover{
-opacity:.9;
-}
-.chatHeader{
-background:#4f46e5;
-color:white;
-padding:15px;
-border-radius:10px;
-text-align:center;
-font-size:20px;
-font-weight:bold;
-}
-
-<input
-id="userInput"
-type="text"
-placeholder="Type your English..."
-
-flex:1;
-padding:12px;
-border:1px solid #ccc;
-border-radius:10px;
-font-size:16px;">
-
-<button
-onclick="sendMessage()"
-style="
-padding:12px 18px;
-background:#4f46e5;
-color:white;
-border:none;
-border-radius:10px;
-font-weight:bold;">
-
-Send
-
-</button>
-
-</div>
-.backBtn{
-margin-top:20px;
-width:100%;
-}
-
-
-  #chatBox{
-margin-top:20px;
-height:350px;
-background:white;
-border:1px solid #ddd;
-border-radius:12px;
-padding:15px;
+#chatBox{
+height:300px;
 overflow-y:auto;
-}
-<div id="chatBox">
-<div style="display:flex;gap:10px;margin-top:15px;">
-
-<input
-id="userInput"
-type="text"
-placeholder="Type your English..."
-style="
-flex:1;
-padding:12px;
-border:1px solid #ccc;
+border:1px solid #ddd;
+padding:10px;
 border-radius:10px;
-font-size:16px;">
-
-<button
-onclick="sendMessage()"
-style="
-padding:12px 18px;
-background:#4f46e5;
-color:white;
-border:none;
-border-radius:10px;
-font-weight:bold;">
-
-Send
-
-</button>
-
-</div>
-<div class="aiMessage">
-👋 Hello! I'm your English Coach.
-</div>
-
-</div>
-
-<!-- YAHAN PASTE KARO -->
-
-<div style="display:flex;gap:10px;margin-top:15px;">
-
-<input
-id="userInput"
-type="text"
-placeholder="Paste your Gemini API Key"
-style="flex:1;padding:12px;border:1px solid #ccc;border-radius:10px;">
-
-<button onclick="sendMessage()">
-Send
-</button>
-
-</div>
-
-<button class="backBtn" onclick="goBack()">
-Back
-</button>
-.aiMessage{
-background:#f3f4f6;
-padding:12px;
-border-radius:12px;
-margin-bottom:10px;
-max-width:80%;
-font-size:15px;
-line-height:1.5;
+margin-bottom:15px;
+background:#f8f8f8;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div id="homeScreen" class="container">
 
-<header>
-🗣 English Coach AI
-</header>
+<h1>English Coach AI</h1>
 
-<div class="main">
+<input id="apiKey" placeholder="Paste Gemini API Key">
 
-<label>Gemini API Key</label>
-
-<input
-type="text"
-placeholder="Paste your API Key">
-
-<label>Scenario</label>
-
-<textarea
-  id="scenario"
-placeholder="Example: Job Interview"></textarea>
+<textarea id="scenario" placeholder="Scenario"></textarea>
 
 <button onclick="startSession()">
 Start Practice
@@ -233,33 +89,37 @@ Start Practice
 
 </div>
 
-</div>
-<div id="chatScreen">
+<div id="chatScreen" class="container">
 
-<div class="chatHeader">
-English Coach Chat
-</div>
+<h1>English Coach Chat</h1>
 
 <div id="chatBox">
 
-<div class="aiMessage">
-
+<div>
 👋 Hello! I'm your English Coach.
-
 </div>
 
 </div>
 
-<button class="backBtn" onclick="goBack()">
+<input
+id="userInput"
+placeholder="Type your English...">
+
+<button onclick="sendMessage()">
+Send
+</button>
+
+<button onclick="goBack()">
 Back
 </button>
 
 </div>
-  <script>
+
+<script>
 
 function startSession(){
 
-document.querySelector(".container").style.display="none";
+document.getElementById("homeScreen").style.display="none";
 
 document.getElementById("chatScreen").style.display="block";
 
@@ -267,50 +127,33 @@ document.getElementById("chatScreen").style.display="block";
 
 function goBack(){
 
-document.querySelector(".container").style.display="block";
-
 document.getElementById("chatScreen").style.display="none";
 
+document.getElementById("homeScreen").style.display="block";
+
 }
-    function sendMessage(){
+
+function sendMessage(){
 
 let input=document.getElementById("userInput");
 
-let text=input.value.trim();
+let msg=input.value.trim();
 
-if(text=="") return;
+if(msg=="") return;
 
 let chat=document.getElementById("chatBox");
 
-chat.innerHTML+=`
-<div style="
-background:#4f46e5;
-color:white;
-padding:12px;
-border-radius:12px;
-margin:10px 0;
-margin-left:60px;
-text-align:right;">
-${text}
-</div>
-`;
+chat.innerHTML+=`<div style="text-align:right;color:blue;margin:10px 0;">${msg}</div>`;
 
-chat.innerHTML+=`
-<div style="
-background:#f3f4f6;
-padding:12px;
-border-radius:12px;
-margin-bottom:10px;
-margin-right:60px;">
-😊 Great! Keep practicing your English.
-</div>
-`;
+chat.innerHTML+=`<div style="margin:10px 0;">😊 Great! Keep practicing your English.</div>`;
 
 input.value="";
 
 chat.scrollTop=chat.scrollHeight;
 
-    }
+}
+
 </script>
+
 </body>
 </html>
