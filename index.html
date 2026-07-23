@@ -83,8 +83,6 @@ background:#f8f8f8;
 
 <textarea id="scenario" placeholder="Scenario"></textarea>
 
-<div class="buttonRow">
-
 <button onclick="goBack()">
 ⬅ Back
 </button>
@@ -103,6 +101,38 @@ background:#f8f8f8;
 
 <div id="chatBox">
 
+<div class="aiMessage">
+👋 Hello! I'm your English Coach.
+</div>
+
+</div>
+
+<button class="backBtn" onclick="goBack()">
+Back
+</button>
+<input
+id="userInput"
+type="text"
+placeholder="Type your English..."
+style="
+width:100%;
+padding:12px;
+margin-top:15px;
+border:1px solid #ccc;
+border-radius:10px;
+font-size:16px;">
+
+<div class="buttonRow">
+
+<button onclick="goBack()">
+⬅ Back
+</button>
+
+<button onclick="sendMessage()">
+📤 Send
+</button>
+
+</div>
 <div>
 👋 Hello! I'm your English Coach.
 </div>
