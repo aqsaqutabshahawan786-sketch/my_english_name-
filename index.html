@@ -12,7 +12,7 @@ padding:0;
 box-sizing:border-box;
 font-family:Arial,sans-serif;
 }
-
+.buttonRow
 body{
 background:#eef2ff;
 }
@@ -83,9 +83,17 @@ background:#f8f8f8;
 
 <textarea id="scenario" placeholder="Scenario"></textarea>
 
-<button onclick="startSession()">
-Start Practice
+<div class="buttonRow">
+
+<button onclick="goBack()">
+⬅ Back
 </button>
+
+<button onclick="sendMessage()">
+📤 Send
+</button>
+
+</div>
 
 </div>
 
