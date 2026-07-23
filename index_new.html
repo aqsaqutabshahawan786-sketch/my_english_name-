@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Coach AI</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#eef2ff;
+}
+
+.container{
+max-width:450px;
+margin:auto;
+min-height:100vh;
+background:white;
+padding:20px;
+}
+
+h1{
+text-align:center;
+color:#4f46e5;
+margin-bottom:20px;
+}
+
+input,textarea{
+width:100%;
+padding:12px;
+margin-bottom:15px;
+border:1px solid #ccc;
+border-radius:10px;
+font-size:16px;
+}
+
+textarea{
+height:100px;
+resize:none;
+}
+
+button{
+width:100%;
+padding:14px;
+background:#4f46e5;
+color:white;
+border:none;
+border-radius:10px;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+}
+
+#chatScreen{
+display:none;
+}
+
+#chatBox{
+height:300px;
+overflow-y:auto;
+border:1px solid #ddd;
+padding:10px;
+border-radius:10px;
+margin-bottom:15px;
+background:#f8f8f8;
+}
+</style>
+</head>
+
+<body>
+
+<div id="homeScreen" class="container">
+
+<h1>English Coach AI</h1>
+
+<input id="apiKey" placeholder="Paste Gemini API Key">
+
+<textarea id="scenario" placeholder="Scenario"></textarea>
+
+<button onclick="startSession()">
+Start Practice
+</button>
+
+</div>
+
+<div id="chatScreen" class="container">
+
+<h1>English Coach Chat</h1>
+
+<div id="chatBox">
+
+<div>
+👋 Hello! I'm your English Coach.
+</div>
+
+</div>
+
+<input
+id="userInput"
+placeholder="Type your English...">
+
+<button onclick="sendMessage()">
+Send
+</button>
+
+<button onclick="goBack()">
+Back
+</button>
+
+</div>
+
+<script>
+
+function startSession(){
+
+document.getElementById("homeScreen").style.display="none";
+
+document.getElementById("chatScreen").style.display="block";
+
+}
+
+function goBack(){
+
+document.getElementById("chatScreen").style.display="none";
+
+document.getElementById("homeScreen").style.display="block";
+
+}
+
+function sendMessage(){
+
+let input=document.getElementById("userInput");
+
+let msg=input.value.trim();
+
+if(msg=="") return;
+
+let chat=document.getElementById("chatBox");
+
+chat.innerHTML+=`<div style="text-align:right;color:blue;margin:10px 0;">${msg}</div>`;
+
+chat.innerHTML+=`<div style="margin:10px 0;">😊 Great! Keep practicing your English.</div>`;
+
+input.value="";
+
+chat.scrollTop=chat.scrollHeight;
+
+}
+
+</script>
+
+</body>
+</html>
