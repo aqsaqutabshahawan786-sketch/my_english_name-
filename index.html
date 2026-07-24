@@ -170,8 +170,13 @@ document.getElementById("chatScreen").style.display="none";
 document.getElementById("homeScreen").style.display="block";
 
 }
+const API_KEY = document.getElementById("apiKey").value.trim();
 
-function sendMessage(){
+if(API_KEY==""){
+alert("Please enter Gemini API Key");
+return;
+}
+function sendMessage(chat.innerHTML+=`<div style="margin:10px 0;">😊 Great! Keep practicing your English.</div>`;){
 
 let input=document.getElementById("userInput");
 
